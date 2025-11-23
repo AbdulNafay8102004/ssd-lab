@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven'
+    }
+
     environment {
         VERSION = '1.0.0'
     }
@@ -11,6 +15,9 @@ pipeline {
             steps {
                 echo 'Building...'
                 echo "Version: ${VERSION}"
+
+                // Maven version check on Windows
+                bat 'mvn -version'
             }
         }
 
@@ -21,6 +28,9 @@ pipeline {
             steps {
                 echo "Testing only on master branch"
                 echo "Version: ${VERSION}"
+
+                // Example Maven test command
+                bat 'mvn test'
             }
         }
 
@@ -28,6 +38,9 @@ pipeline {
             steps {
                 echo 'Deploying...'
                 echo "Deploying version: ${VERSION}"
+
+                // Example deploy placeholder
+                bat 'echo Deploy step running...'
             }
         }
     }
