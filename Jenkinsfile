@@ -1,36 +1,33 @@
 pipeline {
     agent any
 
-    parameters {
-        booleanParam(name: 'executeTests', defaultValue: true, description: 'Run Tests Stage?')
-    }
-
     stages {
+
         stage('Build') {
             steps {
-                echo "Starting build process..."
+                echo 'Building...'
             }
         }
 
         stage('Test') {
             when {
-                expression { params.executeTests == true }
+                expression { return env.BRANCH_NAME == 'master' }
             }
             steps {
-                echo 'Testing with conditions...'
+                echo "Testing only on master branch"
             }
         }
 
         stage('Deploy') {
             steps {
-                echo "Executing deployment..."
+                echo 'Deploying...'
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline Completed'
+            echo 'Post build action executed.'
         }
     }
 }
