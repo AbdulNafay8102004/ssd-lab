@@ -5,6 +5,10 @@ pipeline {
         VERSION = '1.0.0'
     }
 
+    parameters {
+        booleanParam(name: 'executeTests', defaultValue: true, description: 'Execute test stage?')
+    }
+
     stages {
 
         stage('Build') {
@@ -16,7 +20,10 @@ pipeline {
 
         stage('Test') {
             when {
-                expression { return env.BRANCH_NAME == 'master' }
+                allOf {
+                    expression { return env.BRANCH_NAME == 'master' }
+                    expression { return params.executeTests }  // check parameter
+                }
             }
             steps {
                 echo "Testing only on master branch"
